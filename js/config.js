@@ -8,7 +8,7 @@
 export const DEFAULT_CLIENT_ID = '82c09a5a138643ae832cf1a137d2be59';
 // The exact callback URL the built-in application is registered for, e.g.
 // 'https://jfschubert.github.io/incursion-tracker/'
-export const DEFAULT_REDIRECT = 'https://github.com/jfschubert/incursion-tracker/';
+export const DEFAULT_REDIRECT = 'https://jfschubert.github.io/incursion-tracker/';
 
 export const VERSION = '1.0.0';
 export const LICENSE = 'GPL-3.0';
