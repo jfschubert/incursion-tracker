@@ -69,8 +69,12 @@ Plain HTML, CSS and ES modules – no build step. Serve the folder as above and 
 
 [`.github/workflows/release.yml`](.github/workflows/release.yml) deploys to GitHub Pages and creates a release:
 
-1. Bump `VERSION` in `js/config.js` and commit.
-2. `git tag v1.2.3 && git push --tags` – the workflow fails if tag and `VERSION` differ.
+```bash
+git tag 1.2.3 && git push --tags     # v1.2.3 works too
+```
+
+The tag is the version: the workflow writes it into the deployed page and the release zip, so there is
+nothing to bump or commit first. Tags with a suffix like `1.3.0-beta.1` become pre-releases.
 
 A manual run of the workflow deploys to Pages without creating a release.
 

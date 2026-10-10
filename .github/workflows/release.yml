@@ -1,15 +1,16 @@
 # Publishes the tracker to GitHub Pages and creates a GitHub release.
 #
-#   Tag push "v1.2.3"  -> check version, deploy to Pages, create the release (with a zip for self-hosting)
-#   Manual run         -> check, deploy to Pages only (no release)
+#   Tag push "1.2.3" or "v1.2.3" -> deploy to Pages, create the release (with a zip for self-hosting)
+#   Manual run                    -> deploy to Pages only (no release)
 #
-# Bump VERSION in js/config.js first – the check job fails if the tag and VERSION differ.
+# The tag is the version: it is written into js/config.js of the deployed page and the zip, so there is
+# no version bump to commit. VERSION in the repository is only what local copies show.
 # Repository settings -> Pages -> Source must be set to "GitHub Actions".
 name: release
 
 on:
   push:
-    tags: ["v*"]
+    tags: ["v[0-9]*", "[0-9]*"]
   workflow_dispatch:
 
 permissions:
@@ -31,23 +32,29 @@ jobs:
           node-version: 20
       - name: Syntax check
         run: for f in js/*.js; do echo "$f"; node --input-type=module --check < "$f"; done
-      - name: Version consistency
+      - name: Version
         id: version
+        # from the tag (leading "v" optional); manual runs keep VERSION from js/config.js
         run: |
-          v=$(sed -n "s/^export const VERSION = '\([^']*\)'.*/\1/p" js/config.js)
-          [ -n "$v" ] || { echo "::error::VERSION not found in js/config.js"; exit 1; }
-          if [ "${GITHUB_REF_TYPE}" = tag ] && [ "${GITHUB_REF_NAME#v}" != "$v" ]; then
-            echo "::error::tag ${GITHUB_REF_NAME} does not match VERSION '$v' in js/config.js"; exit 1
+          if [ "${GITHUB_REF_TYPE}" = tag ]; then
+            v="${GITHUB_REF_NAME#v}"
+            [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || { echo "::error::tag ${GITHUB_REF_NAME} is not a version like 1.2.3"; exit 1; }
+          else
+            v=$(sed -n "s/^export const VERSION = '\([^']*\)'.*/\1/p" js/config.js)
           fi
           echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "Version: $v"
       - uses: actions/configure-pages@v5
         id: pages
       - name: Assemble site
         # only the files the page needs – no IDE or repo files on Pages
         run: |
-          mkdir -p _site
-          cp -r index.html icon.svg css js _site/
-          [ -f LICENSE ] && cp LICENSE _site/ || true
+          for d in _site _zip; do
+            mkdir -p $d && cp -r index.html icon.svg css js $d/
+            [ -f LICENSE ] && cp LICENSE $d/ || true
+            sed -i "s|^export const VERSION = '.*';|export const VERSION = '${{ steps.version.outputs.version }}';|" $d/js/config.js
+            grep -q "^export const VERSION = '${{ steps.version.outputs.version }}';" $d/js/config.js || { echo "::error::could not set VERSION"; exit 1; }
+          done
       - name: Inject built-in ESI application
         # Client ID from the repository variable ESI_CLIENT_ID (Settings -> Secrets and variables ->
         # Actions -> Variables), or a secret of the same name. It is public in the deployed page
@@ -68,9 +75,8 @@ jobs:
         with:
           path: _site
       - name: Zip for self-hosting
-        # built from the repository files, without the hosted Client ID (it would not work elsewhere)
+        # _zip has the version but not the hosted Client ID (it would not work elsewhere)
         run: |
-          mkdir -p _zip && cp -r index.html icon.svg css js _zip/ && { [ -f LICENSE ] && cp LICENSE _zip/ || true; }
           cd _zip && zip -r "../incursion-tracker-${{ steps.version.outputs.version }}.zip" .
       - uses: actions/upload-artifact@v4
         with:
