@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incursion Tracker</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M12 7v10M7.5 9.5 12 12l4.5-2.5" opacity=".6"/></symbol>
+  <!-- Icons: Lucide (https://lucide.dev), ISC license -->
+  <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h.01M3 12h.01M3 18h.01M8 6h13M8 12h13M8 18h13"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="i-isk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-min" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-eraser" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21M22 21H7M5 11l9 9"/></symbol>
+</svg>
+
+<header>
+  <div class="brand"><svg><use href="#i-logo"/></svg><span>Incursion Tracker</span></div>
+  <nav class="pages">
+    <button class="page active" data-page="tracker">Tracker</button>
+    <button class="page" data-page="settings">Settings</button>
+    <button class="page" data-page="about">About</button>
+  </nav>
+  <div class="hdr-right">
+    <span class="status" id="ticker"></span>
+    <span class="live" id="live"><i></i><span>ESI</span></span>
+    <button class="primary sm" id="addChar"><svg class="ic"><use href="#i-plus"/></svg>Add character</button>
+  </div>
+</header>
+
+<main class="page-tracker" data-page="tracker">
+  <div class="col">
+    <section class="win" data-win="today">
+      <div class="bar"><svg class="ico"><use href="#i-wallet"/></svg><h2>Incursion income · <span id="dayTitle">today</span></h2>
+        <span class="info" tabindex="0" data-tip="Sums the wallet journal entries <b>Corporate Reward Payout</b> (CONCORD rewards) and <b>Corporate Reward Tax</b> for the current EVE day (UTC). Each payout counts as one site.<br><br>The journal is cached by ESI for up to an hour, so new payouts can take that long to appear. Each character is re-read as soon as its cache expires.">i</span>
+        <span class="extra" id="todayDate"></span>
+        <span class="ctl"><button class="sm" id="backToday" hidden title="Show today again">Today</button><button class="wbtn" id="syncAll" title="Re-read all characters (served from cache until it expires)"><svg class="ic"><use href="#i-refresh"/></svg></button><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body">
+        <div class="tiles">
+          <div class="tile main"><div class="k" id="tNetLbl">Net today</div><div class="v" id="tNet">0 ISK</div></div>
+          <div class="tile"><div class="k">Sites</div><div class="v" id="tSites">0</div></div>
+          <div class="tile"><div class="k">Payout</div><div class="v" id="tGross">0 ISK</div></div>
+          <div class="tile"><div class="k">Corp tax</div><div class="v" id="tTax">0 ISK</div></div>
+        </div>
+        <div class="tscroll">
+          <table class="t" id="todayTbl">
+            <thead><tr><th>Pilot</th><th class="num">Sites</th><th class="num">Payout</th><th class="num">Tax</th><th class="num">Net</th><th class="num">Last site</th><th class="num">Wallet</th><th class="num">Next read</th></tr></thead>
+            <tbody></tbody><tfoot></tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section class="win" data-win="payouts">
+      <div class="bar"><svg class="ico"><use href="#i-list"/></svg><h2>Payouts · <span id="payoutTitle">today</span></h2><span class="extra" id="payoutCount"></span>
+        <span class="ctl"><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body">
+        <div class="tscroll" style="max-height:420px;overflow-y:auto">
+          <table class="t" id="payoutTbl">
+            <thead><tr><th>Time (EVE)</th><th>Pilot</th><th class="num">Payout</th><th class="num">Tax</th><th class="num">Net</th><th class="num">Balance</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section class="win" data-win="week">
+      <div class="bar"><svg class="ico"><use href="#i-cal"/></svg><h2>Last 14 days</h2><span class="info" tabindex="0" data-tip="Click a day to show its income and payouts above. Click it again to go back to today.">i</span>
+        <span class="extra" id="weekSum"></span>
+        <span class="ctl"><select id="weekChar" style="padding:2px 4px;font-size:11.5px;margin-right:4px"></select><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body">
+        <div class="tscroll">
+          <table class="t" id="weekTbl">
+            <thead><tr><th>Date</th><th class="num">Sites</th><th class="num">Payout</th><th class="num">Tax</th><th class="num">Net</th><th style="width:30%"></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+  <aside class="col">
+    <section class="win" data-win="srp">
+      <div class="bar"><svg class="ico"><use href="#i-shield"/></svg><h2>SRP status</h2>
+        <span class="info" tabindex="0" id="srpTip" data-tip="">i</span>
+        <span class="ctl"><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body" id="srpList"></div>
+    </section>
+    <section class="win" data-win="chars">
+      <div class="bar"><svg class="ico"><use href="#i-users"/></svg><h2>Characters</h2><span class="extra" id="charCount"></span>
+        <span class="ctl"><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body">
+        <div id="charList"></div>
+        <div class="row" style="margin-top:10px">
+          <button class="primary" id="addChar2"><svg class="ic"><use href="#i-plus"/></svg>Log in with EVE Online</button>
+        </div>
+      </div>
+    </section>
+    <section class="win" data-win="events">
+      <div class="bar"><svg class="ico"><use href="#i-bell"/></svg><h2>Events</h2>
+        <span class="ctl"><button class="wbtn" id="clearLog" title="Clear"><svg class="ic"><use href="#i-eraser"/></svg></button><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body"><ul class="list" id="log"></ul></div>
+    </section>
+  </aside>
+</main>
+
+<main class="page-settings" data-page="settings" hidden>
+  <div class="col">
+    <section class="win" data-win="app">
+      <div class="bar"><svg class="ico"><use href="#i-key"/></svg><h2>ESI application</h2>
+        <span class="ctl"><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body">
+        <div id="protoMsg"></div>
+        <ol class="steps small" id="appSetup">
+          <li>Create an application on <a href="https://developers.eveonline.com/applications" target="_blank" rel="noopener">developers.eveonline.com</a> with the scope <code>esi-wallet.read_character_wallet.v1</code>.</li>
+          <li>Set its callback URL to exactly:<br><code id="cbUrl"></code> <button class="wbtn" id="cbCopy" title="Copy"><svg class="ic"><use href="#i-copy"/></svg></button></li>
+          <li>Paste the application's Client ID below. No secret is needed: this page logs in with PKCE.</li>
+        </ol>
+        <div class="kv">
+          <span class="k">Client ID</span><input id="clientId" placeholder="e.g. 3f2c…" spellcheck="false" autocomplete="off">
+        </div>
+      </div>
+    </section>
+    <section class="win" data-win="data">
+      <div class="bar"><svg class="ico"><use href="#i-db"/></svg><h2>Stored data</h2>
+        <span class="ctl"><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body" style="display:grid;gap:10px">
+        <div class="small">Characters, refresh tokens and the relevant journal entries are kept in this browser's local storage only. Nothing is sent anywhere except to the EVE SSO and ESI.</div>
+        <div class="row">
+          <button id="clearJournal"><svg class="ic"><use href="#i-eraser"/></svg>Forget cached journal</button>
+          <button class="danger" id="clearAll"><svg class="ic"><use href="#i-trash"/></svg>Remove everything</button>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="col">
+    <section class="win" data-win="srpcfg">
+      <div class="bar"><svg class="ico"><use href="#i-sliders"/></svg><h2>SRP rule</h2>
+        <span class="ctl"><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body" style="display:grid;gap:10px">
+        <div class="small">A <b>Player Donation</b> from your character to this recipient counts as an SRP payment, which stays valid for the time set below.</div>
+        <div class="kv">
+          <span class="k">Recipient</span><input id="srpName" placeholder="Name of your SRP corporation">
+          <span class="k">Valid for (hours)</span><input id="srpHours" type="number" min="1" step="1" style="width:110px">
+          <span class="k">Min. amount (M ISK)</span><input id="srpMin" type="number" min="0" step="1" style="width:110px">
+          <span class="k">Warn before (min)</span><input id="warnMin" type="number" min="0" step="5" style="width:110px">
+        </div>
+        <label class="switch"><input type="checkbox" id="notify"><span class="track"></span><span class="lbl">Desktop notifications (new payouts, SRP expiring / expired)</span></label>
+      </div>
+    </section>
+  </div>
+</main>
+
+<main class="page-about" data-page="about" hidden>
+  <div class="col">
+    <section class="win about-hero">
+      <div class="body">
+        <img src="icon.svg" alt="" class="about-logo">
+        <div>
+          <h1>Incursion Tracker</h1>
+          <div class="small" id="aboutVersion"></div>
+          <p>Tracks daily incursion income (CONCORD payouts and corp tax) and SRP coverage for all your characters, straight from the EVE wallet journal via ESI.</p>
+          <div class="about-links">
+            <a class="repo-link" data-path="#readme" target="_blank" rel="noopener">Documentation</a>
+            <a class="repo-link" data-path="" target="_blank" rel="noopener">GitHub</a>
+            <a class="repo-link" data-path="/issues" target="_blank" rel="noopener">Report a bug</a>
+            <a class="repo-link" data-path="/blob/main/LICENSE" target="_blank" rel="noopener" id="aboutLicense"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="win" data-win="donate">
+      <div class="bar"><svg class="ico"><use href="#i-isk"/></svg><h2>Donate ISK</h2></div>
+      <div class="body donate">
+        <img class="portrait" alt="Mister Forever" loading="lazy"
+             src="https://images.evetech.net/characters/379469875/portrait?size=256"
+             onerror="this.onerror=null; this.src='icon.svg'; this.classList.add('fallback')">
+        <div class="donate-text">
+          <p>Enjoying Incursion Tracker? It's free and stays free – if you'd like to say thanks, the developer is happy about an ISK donation in game to:</p>
+          <div class="donate-char">Mister Forever</div>
+          <ol class="small">
+            <li>In EVE, search for the character “Mister Forever” (People &amp; Places or the search bar).</li>
+            <li>Right-click the name → “Give Money”.</li>
+            <li>Enter an amount – optionally a reason like “Incursion Tracker” – and confirm.</li>
+          </ol>
+          <div class="row">
+            <button class="primary" id="donateCopy">Copy name</button>
+          </div>
+          <div class="small">The portrait is loaded from the official EVE image server. Donations are voluntary and give no extra features.</div>
+        </div>
+      </div>
+    </section>
+    <section class="win" data-win="credits">
+      <div class="bar"><svg class="ico"><use href="#i-users"/></svg><h2>Credits</h2></div>
+      <div class="body about-credits">
+        <p>Developed by Jan-Frederic Schubert. Design based on <a href="https://github.com/jfschubert/FleetCommander" target="_blank" rel="noopener">FleetCommander</a>. Thanks to everyone who tests and reports bugs.</p>
+        <p class="small">Icons: Lucide (lucide.dev), ISC License.</p>
+        <p class="small">EVE Online® and Fenris Creations™ and all related logos and other elements are trademarks of Fenris Creations (formerly CCP Games). Incursion Tracker is an independent, unofficial third-party tool and is not affiliated with, endorsed, sponsored or approved by Fenris Creations. It contains no EVE Online artwork or game files and only reads wallet data through the official ESI API.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="toasts"></div>
+<div id="tip" role="tooltip"></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

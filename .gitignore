@@ -1,0 +1,19 @@
+# IDEs / editors
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build output of the release workflow (when run locally)
+_site/
+_zip/
+*.zip
+
+# Tooling
+node_modules/
+.claude/settings.local.json
