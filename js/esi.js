@@ -1,6 +1,6 @@
 // ESI requests and the per-character read schedule (follows each route's cache expiry).
 import {ESI, REF, KEEP_DAYS, HISTORY_DAYS, FALLBACK_J, FALLBACK_B} from './config.js';
-import {state, D, saveData, saveNames, changed} from './store.js';
+import {state, D, saveData, saveNames, changed, DATA_VERSION} from './store.js';
 import {accessToken} from './sso.js';
 import {isSrp} from './analysis.js';
 import {esc, isk, short, utcDay} from './format.js';
@@ -50,6 +50,11 @@ async function resolveNames(ids) {
 }
 
 const RELEVANT = new Set(Object.values(REF));
+// "Corporation tax on CONCORD rewards" – recognised by text too, in case ESI books it under another ref_type
+const CONCORD_TAX = /corporation tax on concord/i;
+
+// Today's raw journal entries per character from the last read (memory only, for "Copy journal sample")
+export const lastRaw = {};
 
 async function syncJournal(c) {
     const d = D(c.id), now = Date.now(), cutoff = now - KEEP_DAYS * 864e5;
@@ -59,14 +64,17 @@ async function syncJournal(c) {
         const r = await esi(c, `/characters/${c.id}/wallet/journal/?page=${page}`);
         pages = r.pages;
         if (page === 1) expires = r.expires;
+        if (page === 1) lastRaw[c.id] = r.json.filter(e => e.date.slice(0, 10) === utcDay(now));
         for (const e of r.json) {
-            if (!RELEVANT.has(e.ref_type)) continue;
+            const t = CONCORD_TAX.test(e.description || '') ? REF.TAX : e.ref_type;
+            if (!RELEVANT.has(t)) continue;
             if (!(e.id in d.entries)) fresh.push(e);
             d.entries[e.id] = {
                 id: e.id,
                 date: e.date,
-                t: e.ref_type,
-                a: e.amount,
+                t,
+                a: e.amount ?? 0,
+                tx: e.tax ?? 0,      // ESI's own tax field (positive), if set
                 b: e.balance,
                 desc: e.description,
                 sp: e.second_party_id
@@ -79,6 +87,7 @@ async function syncJournal(c) {
     for (const [k, e] of Object.entries(d.entries)) if (Date.parse(e.date) < cutoff) delete d.entries[k];
     await resolveNames(Object.values(d.entries).filter(e => e.t === REF.DON).map(e => e.sp));
     d.jAt = now;
+    d.v = DATA_VERSION;
     d.nextJ = Math.max((expires || now + FALLBACK_J) + 3000, now + 30e3);
     if (d.init) announce(c, fresh);
     d.init = true;

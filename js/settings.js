@@ -3,6 +3,7 @@ import {redirectUri, DEFAULT_CLIENT_ID} from './config.js';
 import {state, KEYS, LS, emptyData, saveCfg, saveData, builtinUsable, changed} from './store.js';
 import {$} from './format.js';
 import {toast} from './ui.js';
+import {lastRaw} from './esi.js';
 
 export function bindSettings(onRuleChange) {
     const {cfg} = state;
@@ -47,6 +48,13 @@ export function bindSettings(onRuleChange) {
     }
 
     $('#cbCopy').onclick = () => navigator.clipboard?.writeText(redirectUri).then(() => toast('Callback URL copied', 'ok'));
+    // today's raw ESI journal entries per character, for bug reports (contains no tokens)
+    $('#copyJournal').onclick = async () => {
+        const sample = Object.fromEntries(state.chars.filter(c => lastRaw[c.id]).map(c => [c.name, lastRaw[c.id]]));
+        if (!Object.keys(sample).length) { toast('No journal read yet in this session – wait for the next read.', 'warn'); return; }
+        try { await navigator.clipboard.writeText(JSON.stringify(sample, null, 1)); toast('Journal sample copied', 'ok'); }
+        catch { toast('Copying failed.', 'err'); }
+    };
     $('#clearJournal').onclick = () => {
         for (const id in state.data) state.data[id] = emptyData();
         saveData();

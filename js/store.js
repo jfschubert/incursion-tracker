@@ -44,6 +44,10 @@ export const state = {
     selDay: null,                      // day picked in the 14-day table (YYYY-MM-DD), null = today
 };
 
+// Bump when stored entries gain fields: characters are then re-read on the next tick.
+export const DATA_VERSION = 2;
+for (const d of Object.values(state.data)) if (d.v !== DATA_VERSION) d.nextJ = 0;
+
 export const saveCfg = () => LS.set('itrk.cfg', state.cfg);
 export const saveChars = () => LS.set('itrk.chars', state.chars);
 export const saveData = () => LS.set('itrk.data', state.data);

@@ -2,31 +2,41 @@
 import {REF} from './config.js';
 import {state, entriesOf} from './store.js';
 
-export function dayStats(ids, day) {
-    const s = {sites: 0, gross: 0, tax: 0, last: null};
-    for (const id of ids) for (const e of entriesOf(id)) {
-        if (e.date.slice(0, 10) !== day) continue;
-        if (e.t === REF.PAY) {
-            s.sites++;
-            s.gross += e.a;
-            if (!s.last || e.date > s.last) s.last = e.date;
-        } else if (e.t === REF.TAX) s.tax += e.a;
-    }
-    s.net = s.gross + s.tax;
-    return s;
-}
+// ISK a tax line took from the wallet (negative). Falls back to ESI's tax field if amount is empty.
+const taxValue = t => t.a || -Math.abs(t.tx || 0);
 
-// Payouts of one day, each paired with the corp tax entry booked right after it.
-export function payoutsOf(id, day) {
+// One day of one character: payouts, each paired with the corp tax line booked right after it,
+// plus tax lines that matched no payout. Without a tax line, the payout's own tax field is used.
+function pairDay(id, day) {
     const es = entriesOf(id).filter(e => e.date.slice(0, 10) === day);
     const taxes = es.filter(e => e.t === REF.TAX), used = new Set();
     const free = t => !used.has(t.id);
-    return es.filter(e => e.t === REF.PAY).map(e => {
+    const payouts = es.filter(e => e.t === REF.PAY).map(e => {
         const tx = taxes.find(t => t.date === e.date && free(t))
             || taxes.find(t => Math.abs(Date.parse(t.date) - Date.parse(e.date)) < 5000 && free(t));
         if (tx) used.add(tx.id);
-        return {e, tax: tx ? tx.a : 0, bal: tx ? tx.b : e.b};
+        const tax = tx ? taxValue(tx) : -Math.abs(e.tx || 0);
+        return {e, tax, bal: tx ? tx.b : e.b};
     });
+    return {payouts, rest: taxes.filter(free)};
+}
+
+export const payoutsOf = (id, day) => pairDay(id, day).payouts;
+
+export function dayStats(ids, day) {
+    const s = {sites: 0, gross: 0, tax: 0, last: null};
+    for (const id of ids) {
+        const {payouts, rest} = pairDay(id, day);
+        for (const {e, tax} of payouts) {
+            s.sites++;
+            s.gross += e.a;
+            s.tax += tax;
+            if (!s.last || e.date > s.last) s.last = e.date;
+        }
+        for (const t of rest) s.tax += taxValue(t);
+    }
+    s.net = s.gross + s.tax;
+    return s;
 }
 
 // SRP tracking is off until a recipient is set in Settings
