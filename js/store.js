@@ -46,7 +46,7 @@ export const state = {
 };
 
 // Bump when stored entries gain fields: characters are then re-read on the next tick.
-export const DATA_VERSION = 2;
+export const DATA_VERSION = 3;
 for (const d of Object.values(state.data)) if (d.v !== DATA_VERSION) d.nextJ = 0;
 
 export const saveCfg = () => LS.set('itrk.cfg', state.cfg);

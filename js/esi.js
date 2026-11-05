@@ -50,8 +50,9 @@ async function resolveNames(ids) {
 }
 
 const RELEVANT = new Set(Object.values(REF));
-// "Corporation tax on CONCORD rewards" – recognised by text too, in case ESI books it under another ref_type
+// CONCORD reward tax is booked as corp_tax_payment in ESI; also recognised by text ("Corporation tax on CONCORD rewards")
 const CONCORD_TAX = /corporation tax on concord/i;
+const TAX_REF = 'corp_tax_payment';
 
 // Today's raw journal entries per character from the last read (memory only, for "Copy journal sample")
 export const lastRaw = {};
@@ -66,7 +67,7 @@ async function syncJournal(c) {
         if (page === 1) expires = r.expires;
         if (page === 1) lastRaw[c.id] = r.json.filter(e => e.date.slice(0, 10) === utcDay(now));
         for (const e of r.json) {
-            const t = CONCORD_TAX.test(e.description || '') ? REF.TAX : e.ref_type;
+            const t = e.ref_type === TAX_REF || CONCORD_TAX.test(e.description || '') ? REF.TAX : e.ref_type;
             if (!RELEVANT.has(t)) continue;
             if (!(e.id in d.entries)) fresh.push(e);
             d.entries[e.id] = {
