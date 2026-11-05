@@ -82,8 +82,8 @@ export function renderWeek() {
         return {day, s: dayStats(ids, day)};
     });
     const max = Math.max(1, ...days.map(d => d.s.net));
-    const sum = days.reduce((a, d) => ({net: a.net + d.s.net, sites: a.sites + d.s.sites}), {net: 0, sites: 0});
-    $('#weekSum').textContent = `${sum.sites} sites · ${isk(sum.net)}`;
+    const sum = days.reduce((a, d) => ({net: a.net + d.s.net, tax: a.tax + d.s.tax, sites: a.sites + d.s.sites}), {net: 0, tax: 0, sites: 0});
+    $('#weekSum').textContent = `${sum.sites} sites · tax ${isk(sum.tax)} · ${isk(sum.net)}`;
     const shown = viewDay();
     $('#weekTbl tbody').innerHTML = days.map(({
                                                   day,
