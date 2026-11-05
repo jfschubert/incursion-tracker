@@ -14,6 +14,8 @@ and phones.
 - **Daily income** – sums *Corporate Reward Payout* (CONCORD) and *Corporate Reward Tax* for the current EVE day
   (UTC): net, sites, payout and corp tax, per pilot and in total
 - **Payout list** – every site payout of the day, paired with its tax entry
+- **Concord LP** – potential LP per site (10,000 per CONCORD payout), shown separately from ISK; set a price per LP
+  under **Settings → Concord LP** to see its ISK value. LP is not added to net income
 - **Last 14 days** – daily totals with bars, per pilot or for all; click a day to see its income and payouts
 - **SRP status** – finds the latest *Player Donation* to your SRP corporation and counts down until it expires
   (validity, minimum amount and warning time are configurable)

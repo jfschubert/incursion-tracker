@@ -146,6 +146,8 @@ svg.ic { width: 1.1em; height: 1.1em; vertical-align: -.2em; display: inline-blo
 /* --- Tracker specific --- */
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 10px; }
 @media (max-width: 700px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tiles.lp { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 700px) { .tiles.lp { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .tile { background: var(--row); padding: 8px 10px; min-width: 0; }
 .tile .k { text-transform: uppercase; letter-spacing: .03em; }
 .tile .v { color: var(--bright); font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }

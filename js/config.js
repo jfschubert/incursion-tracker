@@ -18,6 +18,9 @@ export const ESI = 'https://esi.evetech.net/latest';
 export const SSO = 'https://login.eveonline.com/v2/oauth';
 export const SCOPE = 'esi-wallet.read_character_wallet.v1';
 export const REF = {PAY: 'corporate_reward_payout', TAX: 'corporate_reward_tax', DON: 'player_donation'};
+// CONCORD loyalty points per incursion site (one Corporate Reward Payout). Potential LP only:
+// the journal does not show the LP that is actually granted.
+export const LP_PER_SITE = 10000;
 export const KEEP_DAYS = 35;
 export const HISTORY_DAYS = 14;
 // Fallback cache lifetimes if the Expires header is not readable. The browser cache still

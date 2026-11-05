@@ -13,6 +13,9 @@ const today = () => utcDay(Date.now());
 // The day shown in the income and payouts windows
 const viewDay = () => state.selDay || today();
 const dayLabel = d => d === today() ? 'today' : d.replace(/-/g, '.');
+// potential LP, shown next to ISK and never added to it
+const lpNum = v => Math.round(v || 0).toLocaleString('en-US');
+const lpPrice = () => +state.cfg.lpPrice || 0;
 
 function pilotCell(c) {
     const st = c.bad || state.errs[c.id] ? 'bad' : state.busy.has(c.id) ? 'busy' : D(c.id).jAt ? 'ok' : '';
@@ -30,6 +33,11 @@ export function renderToday() {
     $('#tSites').textContent = tot.sites;
     $('#tGross').textContent = isk(tot.gross);
     $('#tTax').textContent = isk(tot.tax);
+    $('#tLp').textContent = lpNum(tot.lp) + ' LP';
+    $('#tLpIsk').textContent = lpPrice() ? isk(tot.lp * lpPrice()) : '–';
+    // estimated ISK per hour: net over the time from the first to the last site of the day
+    const hours = tot.sites > 1 ? (Date.parse(tot.last) - Date.parse(tot.first)) / 3600e3 : 0;
+    $('#tRate').textContent = hours > 0 ? isk(tot.net / hours) + '/h' : '–';
     const balSum = chars.reduce((a, c) => a + (D(c.id).bal || 0), 0);
 
     $('#todayTbl tbody').innerHTML = chars.length ? chars.map(c => {
@@ -38,13 +46,14 @@ export function renderToday() {
         return `<tr><td>${pilotCell(c)}</td><td class="num">${s.sites || dim(0)}</td>
       <td class="num">${signed(s.gross)}</td><td class="num">${signed(s.tax)}</td>
       <td class="num ${s.net ? 'gold' : 'dimt'}">${s.net ? isk(s.net) : '–'}</td>
+      <td class="num">${s.lp ? lpNum(s.lp) : dim('–')}</td>
       <td class="num">${s.last ? evTime(s.last) : dim('–')}</td>
       <td class="num">${d.bal == null ? dim('–') : isk(d.bal)}</td>
       <td class="num small">${next}</td></tr>`;
-    }).join('') : `<tr><td class="empty" colspan="8">No characters yet. <a href="#" data-act="login">Log in with EVE Online</a> to start tracking.</td></tr>`;
+    }).join('') : `<tr><td class="empty" colspan="9">No characters yet. <a href="#" data-act="login">Log in with EVE Online</a> to start tracking.</td></tr>`;
 
     $('#todayTbl tfoot').innerHTML = chars.length > 1 ? `<tr><td>Total</td><td class="num">${tot.sites}</td><td class="num">${isk(tot.gross)}</td>
-      <td class="num">${isk(tot.tax)}</td><td class="num gold">${isk(tot.net)}</td><td></td><td class="num">${isk(balSum)}</td><td></td></tr>` : '';
+      <td class="num">${isk(tot.tax)}</td><td class="num gold">${isk(tot.net)}</td><td class="num">${tot.lp ? lpNum(tot.lp) : dim('–')}</td><td></td><td class="num">${isk(balSum)}</td><td></td></tr>` : '';
     // header and tab title always show today, whichever day is selected
     const now = isToday ? tot : dayStats(allIds(), today());
     $('#ticker').innerHTML = `Today <b class="g">${isk(now.net)}</b> · ${now.sites} sites · wallets <b>${isk(balSum)}</b>`;
@@ -86,6 +95,7 @@ export function renderWeek() {
     }))}</td>
       <td class="num">${s.sites || dim(0)}</td><td class="num">${s.gross ? isk(s.gross) : dim('–')}</td>
       <td class="num">${s.tax ? isk(s.tax) : dim('–')}</td><td class="num ${s.net ? 'gold' : 'dimt'}">${s.net ? isk(s.net) : '–'}</td>
+      <td class="num">${s.lp ? lpNum(s.lp) : dim('–')}</td>
       <td><div class="wbar"><i style="width:${(Math.max(0, s.net) / max * 100).toFixed(1)}%"></i></div></td></tr>`).join('');
 }
 

@@ -1,5 +1,5 @@
 // Daily incursion income and SRP status from the stored journal entries.
-import {REF} from './config.js';
+import {REF, LP_PER_SITE} from './config.js';
 import {state, entriesOf} from './store.js';
 
 // ISK a tax line took from the wallet (negative). Falls back to ESI's tax field if amount is empty.
@@ -24,7 +24,7 @@ function pairDay(id, day) {
 export const payoutsOf = (id, day) => pairDay(id, day).payouts;
 
 export function dayStats(ids, day) {
-    const s = {sites: 0, gross: 0, tax: 0, last: null};
+    const s = {sites: 0, gross: 0, tax: 0, last: null, first: null, lp: 0};
     for (const id of ids) {
         const {payouts, rest} = pairDay(id, day);
         for (const {e, tax} of payouts) {
@@ -32,10 +32,13 @@ export function dayStats(ids, day) {
             s.gross += e.a;
             s.tax += tax;
             if (!s.last || e.date > s.last) s.last = e.date;
+            if (!s.first || e.date < s.first) s.first = e.date;
         }
         for (const t of rest) s.tax += taxValue(t);
     }
     s.net = s.gross + s.tax;
+    // potential LP, kept apart from ISK: it is not part of net
+    s.lp = s.sites * LP_PER_SITE;
     return s;
 }
 

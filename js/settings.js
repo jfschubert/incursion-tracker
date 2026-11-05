@@ -23,6 +23,7 @@ export function bindSettings(onRuleChange) {
         srpHours: 'value',
         srpMin: 'value',
         warnMin: 'value',
+        lpPrice: 'value',
         notify: 'checked'
     };
     for (const [k, prop] of Object.entries(fields)) {

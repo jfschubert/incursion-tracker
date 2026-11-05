@@ -59,9 +59,14 @@
           <div class="tile"><div class="k">Payout</div><div class="v" id="tGross">0 ISK</div></div>
           <div class="tile"><div class="k">Corp tax</div><div class="v" id="tTax">0 ISK</div></div>
         </div>
+        <div class="tiles lp">
+          <div class="tile"><div class="k">Potential LP</div><div class="v" id="tLp">0 LP</div></div>
+          <div class="tile"><div class="k">LP value</div><div class="v" id="tLpIsk">–</div></div>
+          <div class="tile"><div class="k">ISK / hour</div><div class="v" id="tRate">–</div></div>
+        </div>
         <div class="tscroll">
           <table class="t" id="todayTbl">
-            <thead><tr><th>Pilot</th><th class="num">Sites</th><th class="num">Payout</th><th class="num">Tax</th><th class="num">Net</th><th class="num">Last site</th><th class="num">Wallet</th><th class="num">Next read</th></tr></thead>
+            <thead><tr><th>Pilot</th><th class="num">Sites</th><th class="num">Payout</th><th class="num">Tax</th><th class="num">Net</th><th class="num">LP</th><th class="num">Last site</th><th class="num">Wallet</th><th class="num">Next read</th></tr></thead>
             <tbody></tbody><tfoot></tfoot>
           </table>
         </div>
@@ -86,7 +91,7 @@
       <div class="body">
         <div class="tscroll">
           <table class="t" id="weekTbl">
-            <thead><tr><th>Date</th><th class="num">Sites</th><th class="num">Payout</th><th class="num">Tax</th><th class="num">Net</th><th style="width:30%"></th></tr></thead>
+            <thead><tr><th>Date</th><th class="num">Sites</th><th class="num">Payout</th><th class="num">Tax</th><th class="num">Net</th><th class="num">LP</th><th style="width:30%"></th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -161,6 +166,16 @@
           <span class="k">Warn before (min)</span><input id="warnMin" type="number" min="0" step="5" style="width:110px">
         </div>
         <label class="switch"><input type="checkbox" id="notify"><span class="track"></span><span class="lbl">Desktop notifications (new payouts, SRP expiring / expired)</span></label>
+      </div>
+    </section>
+    <section class="win" data-win="lp">
+      <div class="bar"><svg class="ico"><use href="#i-isk"/></svg><h2>Concord LP</h2>
+        <span class="ctl"><button class="wbtn" data-collapse title="Collapse"><svg class="ic"><use href="#i-min"/></svg></button></span></div>
+      <div class="body" style="display:grid;gap:10px">
+        <div class="small">Each CONCORD payout (one site) counts as 10,000 potential LP. Enter your price per LP to see its ISK value. LP and LP value are shown separately and are not added to net income.</div>
+        <div class="kv">
+          <span class="k">Price per LP (ISK)</span><input id="lpPrice" type="number" min="0" step="any" style="width:110px" placeholder="0">
+        </div>
       </div>
     </section>
   </div>

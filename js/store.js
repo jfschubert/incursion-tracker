@@ -32,6 +32,7 @@ export const state = {
         srpHours: 24,
         srpMin: 0,
         warnMin: 60,
+        lpPrice: 0,                    // ISK per LP, 0 = no LP value shown
         notify: false
     }, LS.get('itrk.cfg', {})),
     chars: LS.get('itrk.chars', []),   // [{id, name, access, refresh, exp, bad}]
